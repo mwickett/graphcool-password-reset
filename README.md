@@ -1,4 +1,4 @@
-1. User inputs email address for reset 
+1. User inputs email address for reset
 2. Schema Extension Function: checks for email address, if it exists adds resetToken and resetExpires to User
 4. Serverside: Watches for reset token and date, fires email to user
 5. Clientside: /reset/:token query for token, return user
@@ -10,4 +10,4 @@
 
 ## Schema modifications
 
-1. Add `resetToken: String` and `resetExpires: DateTime`
+1. Add `resetToken: String @isUnique` and `resetExpires: DateTime`
