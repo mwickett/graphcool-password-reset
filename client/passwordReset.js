@@ -20,7 +20,7 @@ class PasswordReset extends React.Component {
   resetPassword() {
     const { password, passwordAgain } = this.state
     if (password === passwordAgain && password.length > 0) {
-      this.props.gqlResetPassword({ variables: { userId: this.props.data.allUsers[0].id, password }})
+      this.props.resetPassword({ variables: { userId: this.props.data.allUsers[0].id, newPassword: password } })
     }
   }
 
@@ -72,10 +72,9 @@ const tokenQuery = gql`
   }
 `
 
-// Still need correct updatePassword mutation
 const resetPasswordMutation = gql`
-  mutation($userId: ID!, $password: String!) {
-    gqlResetPassword: updateUser(id: $userId, password: $password) {
+  mutation($userId: ID!, $newPassword: String!) {
+    resetPassword(id: $userId, password: $newPassword) {
       id
     }
   }
@@ -86,5 +85,5 @@ export default graphql(tokenQuery, {
     variables: { userFilter: { resetToken: window.location.pathname.split('/reset/').pop() } }
   })
 })(
-  graphql(resetPasswordMutation, { name: 'gqlResetPassword' })(PasswordReset)
+  graphql(resetPasswordMutation, { name: 'resetPassword' })(PasswordReset)
 )
