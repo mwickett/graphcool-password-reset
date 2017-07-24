@@ -1,6 +1,5 @@
-1. User inputs email address for reset (we check if it exists)
-2. Fire reset mutation that sets isResetting: true
-3. Serverside: Watches for true, generates reset token and sets expiry date
+1. User inputs email address for reset 
+2. Schema Extension Function: checks for email address, if it exists adds resetToken and resetExpires to User
 4. Serverside: Watches for reset token and date, fires email to user
 5. Clientside: /reset/:token query for token, return user
 6. If user is found with that token, render reset form component
