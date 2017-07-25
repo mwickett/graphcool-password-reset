@@ -13,7 +13,7 @@ module.exports = function (event) {
       query {
         User(resetToken: "${resetToken}") {
           id
-        }  
+        }
       }`)
       .then(userQueryResult => {
         if (userQueryResult.error) {
@@ -29,8 +29,8 @@ module.exports = function (event) {
       mutation {
         updateUser(
           id: "${id}",
-          password: "${newPasswordHash}"
-          resetToken: null
+          password: "${newPasswordHash}",
+          resetToken: null,
           resetExpires: null
         ) {
           id
@@ -44,14 +44,20 @@ module.exports = function (event) {
       console.log(graphcoolUser)
       const userId = graphcoolUser
       if (graphcoolUser === null) {
-        return Promise.reject('Invalid credentials')
+        return Promise.reject('Invalid credentials.')
       } else if (new Date() > new Date(graphcoolUser.resetExpires)) {
-        return Promise.reject('Token expired')
+        return Promise.reject('Token expired.')
       } else {
         return bcrypt.hash(newPassword, saltRounds)
           .then(hash => updatePassword(userId, hash))
           .then(id => ({ data: { id } }))
           .catch(error => ({ error: error.toString() }))
       }
+    })
+    .catch(error => {
+      if (error.toString() === "TypeError: Cannot read property 'id' of null") {
+        return { error: 'No token found.' }
+      }
+      return { error: error.toString() }
     })
 }
