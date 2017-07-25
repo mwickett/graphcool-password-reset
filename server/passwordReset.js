@@ -10,13 +10,12 @@ module.exports = function (event) {
 
   function getTokenExpiration (token) {
     return api.request(`
-      query ResetToken($resetToken: String!) {
+      query {
         allUsers(filter: {
           resetToken: "${token}"
         }) {
           id
       }
-  }
     }`)
       .then(userQueryResult => {
         if (userQueryResult.error) {
