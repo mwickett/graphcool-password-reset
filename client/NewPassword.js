@@ -21,6 +21,8 @@ class PasswordReset extends React.Component {
     const { password, passwordAgain } = this.state
     if (password === passwordAgain && password.length > 0) {
       this.props.resetPassword({ variables: { resetToken: window.location.pathname.split('/reset/').pop(), password } })
+      .then(id => { console.log(`Password restored for user with id ${id}`) })
+      .catch(err => { console.error(err) })
     }
   }
 
