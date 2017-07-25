@@ -11,17 +11,15 @@ module.exports = function (event) {
   function getTokenExpiration (token) {
     return api.request(`
       query {
-        allUsers(filter: {
-          resetToken: "${token}"
-        }) {
+        User(resetToken: "${token}") {
           id
-      }
-    }`)
+        }  
+      }`)
       .then(userQueryResult => {
         if (userQueryResult.error) {
           return Promise.reject(userQueryResult.error)
         } else {
-          return userQueryResult.data.allUsers[0].id
+          return userQueryResult.data.User.id
         }
       })
   }
