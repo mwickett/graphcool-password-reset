@@ -64,7 +64,7 @@ class PasswordReset extends React.Component {
 }
 
 const resetPasswordMutation = gql`
-  mutation($resetToken: ID!, $password: String!) {
+  mutation($resetToken: String!, $password: String!) {
     resetPassword(resetToken: $resetToken, password: $password) {
       id
     }
