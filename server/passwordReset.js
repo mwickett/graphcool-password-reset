@@ -30,7 +30,9 @@ module.exports = function(event) {
       mutation {
         updateUser(
           id: "${id}",
-          password: "${newPasswordHash}"
+          password: "${newPasswordHash}",
+          resetToken: "",
+          resetExpires: ""
         ) {
           id
         }
