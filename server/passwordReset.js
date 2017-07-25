@@ -13,7 +13,7 @@ module.exports = function (event) {
       query {
         User(resetToken: "${resetToken}") {
           id
-        }  
+        }
       }`)
       .then(userQueryResult => {
         if (userQueryResult.error) {
@@ -53,5 +53,11 @@ module.exports = function (event) {
           .then(id => ({ data: { id } }))
           .catch(error => ({ error: error.toString() }))
       }
+    })
+    .catch(error => {
+      if (error.toString() === "TypeError: Cannot read property 'id' of null") {
+        return { error: 'No token found.' }
+      }
+      return { error: error.toString() }
     })
 }
