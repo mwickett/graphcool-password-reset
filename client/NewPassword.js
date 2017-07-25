@@ -25,16 +25,6 @@ class PasswordReset extends React.Component {
   }
 
   render() {
-    if (this.props.data.loading) {
-      return <div>Loading...</div>
-    }
-    if (!this.props.data.allUsers[0]) {
-      return (
-        <div>
-          Token not found.
-        </div>
-      )
-    }
     const { password, passwordAgain } = this.state
     return (
       <div>
