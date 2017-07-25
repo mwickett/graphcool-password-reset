@@ -44,9 +44,9 @@ module.exports = function (event) {
       console.log(graphcoolUser)
       const userId = graphcoolUser
       if (graphcoolUser === null) {
-        return Promise.reject('Invalid credentials')
+        return Promise.reject('Invalid credentials.')
       } else if (new Date() > new Date(graphcoolUser.resetExpires)) {
-        return Promise.reject('Token expired')
+        return Promise.reject('Token expired.')
       } else {
         return bcrypt.hash(newPassword, saltRounds)
           .then(hash => updatePassword(userId, hash))
