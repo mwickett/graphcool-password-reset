@@ -2,16 +2,16 @@ const fromEvent = require('graphcool-lib').fromEvent
 const bcrypt = require('bcrypt')
 
 module.exports = function (event) {
-  const token = event.data.resetToken
+  const resetToken = event.data.resetToken
   const newPassword = event.data.password
   const graphcool = fromEvent(event)
   const api = graphcool.api('simple/v1')
   const saltRounds = 10
 
-  function getTokenExpiration (token) {
+  function getUserWithToken (resetToken) {
     return api.request(`
       query {
-        User(resetToken: "${token}") {
+        User(resetToken: "${resetToken}") {
           id
         }  
       }`)
@@ -24,7 +24,7 @@ module.exports = function (event) {
       })
   }
 
-  function updateGraphcoolUser (id, newPasswordHash) {
+  function updatePassword (id, newPasswordHash) {
     return api.request(`
       mutation {
         updateUser(
@@ -39,17 +39,17 @@ module.exports = function (event) {
       .then(userMutationResult => (userMutationResult.updateUser.id))
   }
 
-  return getTokenExpiration(token)
+  return getUserWithToken(resetToken)
     .then(graphcoolUser => {
       console.log(graphcoolUser)
       const userId = graphcoolUser
       if (graphcoolUser === null) {
-        return Promise.reject("Invalid credentials")
+        return Promise.reject('Invalid credentials')
       } else if (new Date() > new Date(graphcoolUser.resetExpires)) {
-        return Promise.reject("Token expired")
+        return Promise.reject('Token expired')
       } else {
         return bcrypt.hash(newPassword, saltRounds)
-          .then(hash => updateGraphcoolUser(userId, hash))
+          .then(hash => updatePassword(userId, hash))
           .then(id => ({ data: { id } }))
           .catch(error => ({ error: error.toString() }))
       }
