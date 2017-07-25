@@ -19,7 +19,7 @@ module.exports = function (event) {
         if (userQueryResult.error) {
           return Promise.reject(userQueryResult.error)
         } else {
-          return userQueryResult.data.User.id
+          return userQueryResult.User.id
         }
       })
   }
