@@ -12,7 +12,7 @@ module.exports = function (event) {
     return api.request(`
       query ResetToken($resetToken: String!) {
         allUsers(filter: {
-          resetToken: ${token}
+          resetToken: "${token}"
         }) {
           id
       }
@@ -33,6 +33,8 @@ module.exports = function (event) {
         updateUser(
           id: "${id}",
           password: "${newPasswordHash}"
+          resetToken: null
+          resetExpires: null
         ) {
           id
         }
