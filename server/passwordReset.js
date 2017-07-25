@@ -31,8 +31,8 @@ module.exports = function(event) {
         updateUser(
           id: "${id}",
           password: "${newPasswordHash}",
-          resetToken: "",
-          resetExpires: ""
+          resetToken: null,
+          resetExpires: null
         ) {
           id
         }
