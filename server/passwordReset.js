@@ -18,6 +18,8 @@ module.exports = function (event) {
       .then(userQueryResult => {
         if (userQueryResult.error) {
           return Promise.reject(userQueryResult.error)
+        } else if (!userQueryResult.User) {
+          return Promise.reject('Not a valid token')
         } else {
           return userQueryResult.User.id
         }
@@ -55,9 +57,6 @@ module.exports = function (event) {
       }
     })
     .catch(error => {
-      if (error.toString() === "TypeError: Cannot read property 'id' of null") {
-        return { error: 'No token found.' }
-      }
-      return { error: error.toString() }
+      return { error: error }
     })
 }
